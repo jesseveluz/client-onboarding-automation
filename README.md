@@ -39,7 +39,7 @@ Built as two interlocking Make.com scenarios, structured around the fact that co
 | 2 | Google Sheets – Add a Row | Logs client details (Name, Email, Company) into a live tracking sheet with Status set to "Pending" |
 | 3 | DocuSign – Create and Send an Envelope from Template | Dynamically generates a contract from a pre-built template, auto-populating the client's name and role, and sends it for signature |
 | 4 | Google Sheets – Update a Row | Writes the returned DocuSign Envelope ID back into the same row, creating a reliable unique key for tracking |
-| 5 | HTTP (Slack Webhook) | Posts an instant notification to a dedicated Slack channel announcing the new client and confirming the contract was sent |
+| 5 | Gmail – Send an Email | Notifies the company that a new client has come in and the contract is awaiting signature |
 
 ### Scenario 2: Contract Signed → Client Welcomed
 
@@ -73,9 +73,6 @@ Built as two interlocking Make.com scenarios, structured around the fact that co
 ---
 
 ## Challenges & Solutions
-
-**Challenge:** DocuSign's Make integration didn't automatically expose custom template fields (like the client's name appearing multiple times in the contract body).
-**Solution:** Identified that these needed to be manually added as labeled Text Tabs matched by exact, case-sensitive Data Label, then mapped directly in the envelope-creation module.
 
 **Challenge:** The two scenarios needed to stay decoupled, since contract signing happens asynchronously relative to form submission.
 **Solution:** Designed as two independently triggered scenarios connected by a shared spreadsheet record (matched on Envelope ID) rather than a single linear flow — allowing each to run reliably on its own timeline.
